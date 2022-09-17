@@ -12,27 +12,34 @@ type Config struct {
 }
 
 type App struct {
+	BaseURL string `json:"baseURL" validate:"required"`
+	IsProd  bool   `json:"isProd" validate:"required"`
 	Version string `json:"version"`
 }
 
 type Postgres struct {
-	Host     string `json:"host"`
-	Port     string `json:"port"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	DBName   string `json:"dbName"`
+	Host     string `json:"host" validate:"required"`
+	Port     string `json:"port" validate:"required"`
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
+	DBName   string `json:"dbName" validate:"required"`
 }
 
 type Server struct {
-	Host string `json:"host"`
-	Port string `json:"port"`
+	Host string `json:"host" validate:"required"`
+	Port string `json:"port" validate:"required"`
 }
 
-func ParseConfig(path string) (cfg *Config, err error) {
+func ParseConfig(path string) (*Config, error) {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
-		return
+		return nil, err
 	}
-	err = json.Unmarshal(file, cfg)
-	return
+
+	var cfg Config
+	err = json.Unmarshal(file, &cfg)
+	if err != nil {
+		return nil, err
+	}
+	return &cfg, nil
 }

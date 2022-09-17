@@ -1,6 +1,9 @@
 package server
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/muhammadkhon-abdulloev/url-shortener/config"
 )
@@ -18,6 +21,8 @@ func NewServer(cfg *config.Config, mx *chi.Mux) *Server {
 	}
 }
 
-func (s *Server) Server() {
-	
+func (s *Server) Run() (err error) {
+	s.MapHandlers()
+
+	return http.ListenAndServe(fmt.Sprintf("%s:%s", s.cfg.Server.Host, s.cfg.Server.Port), s.mx)
 }

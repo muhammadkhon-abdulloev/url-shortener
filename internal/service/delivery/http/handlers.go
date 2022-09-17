@@ -1,2 +1,77 @@
 package http
 
+import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/muhammadkhon-abdulloev/url-shortener/config"
+	"github.com/muhammadkhon-abdulloev/url-shortener/internal/models"
+	"github.com/muhammadkhon-abdulloev/url-shortener/internal/service"
+	"github.com/muhammadkhon-abdulloev/url-shortener/pkg/types"
+)
+
+type serviceHandles struct {
+	cfg       *config.Config
+	serviceUC service.UseCase
+}
+
+func NewServiceHandlers(
+	cfg *config.Config,
+	serviceUC service.UseCase,
+) service.Handlers {
+	return &serviceHandles{
+		cfg:       cfg,
+		serviceUC: serviceUC,
+	}
+}
+
+func (h *serviceHandles) GetURL(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	response, err := h.serviceUC.GetURL(id)
+	if err != nil {
+		h.writeError(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	respBody, err := json.Marshal(response)
+	if err != nil {
+		h.writeError(w, "some shit occured", http.StatusInternalServerError)
+	}
+
+	h.writeResponse(w, respBody)
+	
+}
+
+func (h *serviceHandles) NewURL(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		h.writeError(w, err.Error(), http.StatusBadRequest)
+	}
+
+	var params models.NewURLParams
+	err = json.Unmarshal(body, &params)
+	if err != nil {
+		h.writeError(w, err.Error(), http.StatusBadRequest)
+	}
+	response, err := h.serviceUC.NewURL(params)
+	if err != nil {
+		h.writeError(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	respBody, err := json.Marshal(response)
+	if err != nil {
+		h.writeError(w, "some shit occured", http.StatusInternalServerError)
+	}
+
+	h.writeResponse(w, respBody)
+}
+
+func (h *serviceHandles) writeError(w http.ResponseWriter, message string, statusCode int) {
+	http.Error(w, message, statusCode)
+}
+
+func (h *serviceHandles) writeResponse(w http.ResponseWriter, body []byte) {
+	w.Header().Set(types.HeaderContentType, types.ApplicationJSON)
+	w.Write(body)
+}

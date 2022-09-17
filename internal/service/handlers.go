@@ -6,5 +6,5 @@ import (
 
 type Handlers interface {
 	GetURL(w http.ResponseWriter, r *http.Request)
-	ShortURL(w http.ResponseWriter, r *http.Request)
+	NewURL(w http.ResponseWriter, r *http.Request)
 }
