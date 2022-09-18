@@ -9,6 +9,7 @@ import (
 	"github.com/muhammadkhon-abdulloev/url-shortener/config"
 	"github.com/muhammadkhon-abdulloev/url-shortener/internal/server"
 	"github.com/muhammadkhon-abdulloev/url-shortener/pkg/logger"
+	"github.com/muhammadkhon-abdulloev/url-shortener/pkg/storage/postgres"
 )
 
 func main() {
@@ -24,7 +25,14 @@ func main() {
 
 	mx := chi.NewMux()
 
-	srv := server.NewServer(cfg, &http.Server{
+	pgDB, err := postgres.NewPsqlDB(cfg)
+	if err != nil {
+		appLogger.Fatalf("Postgresql init: %s", err)
+	} else {
+		appLogger.Infof("Postgresql connected, Status: $#v", pgDB.Stats())
+	}
+	defer pgDB.Close()
+	srv := server.NewServer(cfg, pgDB, &http.Server{
 		Handler:        mx,
 		MaxHeaderBytes: 1 << 20,
 		ReadTimeout:    time.Second * cfg.Server.ReadTimeout,

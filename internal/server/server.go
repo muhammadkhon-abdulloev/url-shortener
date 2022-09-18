@@ -9,12 +9,14 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/jmoiron/sqlx"
 	"github.com/muhammadkhon-abdulloev/url-shortener/config"
 	"github.com/muhammadkhon-abdulloev/url-shortener/pkg/logger"
 )
 
 type Server struct {
 	cfg        *config.Config
+	db         *sqlx.DB
 	logger     logger.Logger
 	httpServer *http.Server
 	mx         *chi.Mux
@@ -23,11 +25,12 @@ type Server struct {
 // NewServer - constructor function.
 func NewServer(
 	cfg *config.Config,
+	db *sqlx.DB,
 	httpServer *http.Server,
 	logger logger.Logger,
 	mx *chi.Mux,
 ) *Server {
-	if cfg.Server.Mode == "Developement" {
+	if cfg.Server.Mode == "Development" {
 		httpServer.Addr = cfg.Server.DevPort
 
 	} else {
@@ -35,6 +38,7 @@ func NewServer(
 	}
 	return &Server{
 		cfg:        cfg,
+		db:         db,
 		httpServer: httpServer,
 		logger:     logger,
 		mx:         mx,
