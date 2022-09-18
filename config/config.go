@@ -22,29 +22,29 @@ type Logger struct {
 }
 
 type Postgres struct {
-	Host              string `json:"Host" validate:"required"`
-	Port              string `json:"Port" validate:"required"`
-	Username          string `json:"Username" validate:"required"`
-	Password          string `json:"Password" validate:"required"`
-	DBName            string `json:"DBName" validate:"required"`
-	PostgresqlSslmode bool   `json:"PostgresqlSslmode"`
-	PgDriver          string `json:"PgDriver"`
+	Host     string `json:"Host" validate:"required"`
+	Port     string `json:"Port" validate:"required"`
+	Username string `json:"Username" validate:"required"`
+	Password string `json:"Password" validate:"required"`
+	DBName   string `json:"DBName" validate:"required"`
+	SslMode  string `json:"SslMode"`
+	PgDriver string `json:"PgDriver"`
 }
 
 type PostgresDev struct {
-	Host              string `json:"Host" validate:"required"`
-	Port              string `json:"Port" validate:"required"`
-	Username          string `json:"Username" validate:"required"`
-	Password          string `json:"Password" validate:"required"`
-	DBName            string `json:"DBName" validate:"required"`
-	PostgresqlSslmode bool   `json:"PostgresqlSslmode"`
-	PgDriver          string `json:"PgDriver"`
+	Host     string `json:"Host" validate:"required"`
+	Port     string `json:"Port" validate:"required"`
+	Username string `json:"Username" validate:"required"`
+	Password string `json:"Password" validate:"required"`
+	DBName   string `json:"DBName" validate:"required"`
+	SslMode  string `json:"SslMode"`
 }
 
 type Server struct {
 	AppVersion   string        `json:"AppVersion"`
 	BaseURL      string        `json:"BaseURL" validate:"required"`
 	DevPort      string        `json:"DevPort" validate:"required"`
+	MaxVal       int           `json:"MaxVal" validate:"required"`
 	Mode         string        `json:"Mode" validate:"required"`
 	Port         string        `json:"Port" validate:"required"`
 	ReadTimeout  time.Duration `json:"ReadTimeout" validate:"required"`

@@ -6,6 +6,6 @@ import (
 )
 
 func MapServiceRoutes(mx *chi.Mux, h service.Handlers) {
-	mx.Get("/{id}", h.GetURL)
-	mx.Post("/short/{url}", h.NewURL)
+	mx.Get("/{id}", h.GetLongURL)
+	mx.Post("/short", h.ShortURL)
 }

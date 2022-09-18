@@ -8,10 +8,11 @@ type GetURLResponse struct {
 }
 
 type NewURLParams struct {
-	URL string `json:"url"`
+	Shortened string
+	URL       string `json:"url" validate:"required"`
 }
 
 type NewURLResponse struct {
-	Message string `json:"message"`
-	Shorted string `json:"shorted"`
+	Message   string `json:"message"`
+	Shortened string `db:"shortened" json:"shortened"`
 }

@@ -31,9 +31,9 @@ func NewServiceHandlers(
 	}
 }
 
-func (h *serviceHandles) GetURL(w http.ResponseWriter, r *http.Request) {
+func (h *serviceHandles) GetLongURL(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	response, err := h.serviceUC.GetURL(id)
+	response, err := h.serviceUC.GetLongURL(id)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
 	}
@@ -47,7 +47,7 @@ func (h *serviceHandles) GetURL(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *serviceHandles) NewURL(w http.ResponseWriter, r *http.Request) {
+func (h *serviceHandles) ShortURL(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		h.writeError(w, err, http.StatusBadRequest)
@@ -58,7 +58,7 @@ func (h *serviceHandles) NewURL(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		h.writeError(w, err, http.StatusBadRequest)
 	}
-	response, err := h.serviceUC.NewURL(params)
+	response, err := h.serviceUC.ShortURL(params)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
 	}
