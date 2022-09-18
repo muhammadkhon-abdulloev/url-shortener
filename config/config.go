@@ -3,31 +3,52 @@ package config
 import (
 	"encoding/json"
 	"io/ioutil"
+	"time"
 )
 
 type Config struct {
-	App      App      `json:"app"`
-	Postgres Postgres `json:"postgres"`
-	Server   Server   `json:"server"`
+	Logger      Logger      `json:"Logger"`
+	Postgres    Postgres    `json:"Postgres"`
+	PostgresDev PostgresDev `json:"PostgresDev"`
+	Server      Server      `json:"Server"`
 }
 
-type App struct {
-	BaseURL string `json:"baseURL" validate:"required"`
-	IsProd  bool   `json:"isProd" validate:"required"`
-	Version string `json:"version"`
+type Logger struct {
+	Development       bool   `json:"Development"`
+	DisableCaller     bool   `json:"DisableCaller"`
+	DisableStacktrace bool   `json:"DisableStacktrace"`
+	Encoding          string `json:"Encoding"`
+	Level             string `json:"Level"`
 }
 
 type Postgres struct {
-	Host     string `json:"host" validate:"required"`
-	Port     string `json:"port" validate:"required"`
-	Username string `json:"username" validate:"required"`
-	Password string `json:"password" validate:"required"`
-	DBName   string `json:"dbName" validate:"required"`
+	Host              string `json:"Host" validate:"required"`
+	Port              string `json:"Port" validate:"required"`
+	Username          string `json:"Username" validate:"required"`
+	Password          string `json:"Password" validate:"required"`
+	DBName            string `json:"DBName" validate:"required"`
+	PostgresqlSslmode bool   `json:"PostgresqlSslmode"`
+	PgDriver          string `json:"PgDriver"`
+}
+
+type PostgresDev struct {
+	Host              string `json:"Host" validate:"required"`
+	Port              string `json:"Port" validate:"required"`
+	Username          string `json:"Username" validate:"required"`
+	Password          string `json:"Password" validate:"required"`
+	DBName            string `json:"DBName" validate:"required"`
+	PostgresqlSslmode bool   `json:"PostgresqlSslmode"`
+	PgDriver          string `json:"PgDriver"`
 }
 
 type Server struct {
-	Host string `json:"host" validate:"required"`
-	Port string `json:"port" validate:"required"`
+	AppVersion   string        `json:"AppVersion"`
+	BaseURL      string        `json:"BaseURL" validate:"required"`
+	DevPort      string        `json:"DevPort" validate:"required"`
+	Mode         string        `json:"Mode" validate:"required"`
+	Port         string        `json:"Port" validate:"required"`
+	ReadTimeout  time.Duration `json:"ReadTimeout" validate:"required"`
+	WriteTimeout time.Duration `json:"WriteTimeout" validate:"required"`
 }
 
 func ParseConfig(path string) (*Config, error) {

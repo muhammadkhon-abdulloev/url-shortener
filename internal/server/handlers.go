@@ -9,8 +9,8 @@ import (
 )
 
 func (s *Server) MapHandlers() {
-	serviceUC := usecase.NewServiceUC(s.cfg)
-	serviceHandler := handlers.NewServiceHandlers(s.cfg, serviceUC)
+	serviceUC := usecase.NewServiceUC(s.cfg, s.logger)
+	serviceHandler := handlers.NewServiceHandlers(s.cfg, s.logger, serviceUC)
 
 	s.mx.Use(middleware.Timeout(time.Second * 30))
 	handlers.MapServiceRoutes(s.mx, serviceHandler)

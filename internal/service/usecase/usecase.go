@@ -4,15 +4,18 @@ import (
 	"github.com/muhammadkhon-abdulloev/url-shortener/config"
 	"github.com/muhammadkhon-abdulloev/url-shortener/internal/models"
 	"github.com/muhammadkhon-abdulloev/url-shortener/internal/service"
+	"github.com/muhammadkhon-abdulloev/url-shortener/pkg/logger"
 )
 
 type serviceUC struct {
-	cfg *config.Config
+	cfg    *config.Config
+	logger logger.Logger
 }
 
-func NewServiceUC(cfg *config.Config) service.UseCase {
+func NewServiceUC(cfg *config.Config, logger logger.Logger) service.UseCase {
 	return &serviceUC{
-		cfg: cfg,
+		cfg:    cfg,
+		logger: logger,
 	}
 }
 
