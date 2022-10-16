@@ -1,0 +1,33 @@
+{
+    "Logger": {
+        "Developement": true,
+        "DisableCaller": false,
+        "DisableStackrace": false,
+        "Encoding": "json" ,
+        "Level": "info"
+    },
+    "Server": {
+        "BaseURL": "https://test.com/",
+        "Port": ":8080",
+        "DevPort": ":9959",
+        "MaxVal": 9999999,
+        "Mode": "Development",
+        "AppVersion": "v0.0.1"
+    },
+    "Postgres": {
+        "Host": "0.0.0.0",
+        "Port": "",
+        "Username": "",
+        "Password": "",
+        "DBName": "",
+        "SslMode": "disable"
+    },
+    "PostgresDev": {
+        "Host": "jelani.db.elephantsql.com",
+        "Port": "",
+        "Username": "jptslrkr",
+        "Password": "WEVqJyFGxFMJ9UtduPf7DWDDfo7On6js",
+        "DBName": "jptslrkr",
+        "SslMode": "disable"
+    }
+}
