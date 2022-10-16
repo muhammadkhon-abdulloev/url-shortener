@@ -36,15 +36,18 @@ func (h *serviceHandles) GetLongURL(w http.ResponseWriter, r *http.Request) {
 	response, err := h.serviceUC.GetLongURL(id)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 
 	if response.Redirect {
 		http.Redirect(w, r, response.RedirectURI, http.StatusSeeOther)
+		return
 	}
 
 	respBody, err := json.Marshal(response)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 
 	h.writeResponse(w, respBody)
@@ -54,21 +57,25 @@ func (h *serviceHandles) ShortURL(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		h.writeError(w, err, http.StatusBadRequest)
+		return
 	}
 
 	var params models.NewURLParams
 	err = json.Unmarshal(body, &params)
 	if err != nil {
 		h.writeError(w, err, http.StatusBadRequest)
+		return
 	}
 	response, err := h.serviceUC.ShortURL(params)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 
 	respBody, err := json.Marshal(response)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 
 	h.writeResponse(w, respBody)
