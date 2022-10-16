@@ -1,11 +1,13 @@
 package generator
 
+import "github.com/muhammadkhon-abdulloev/url-shortener/pkg/types"
+
 func NewID(i int) (id string) {
 	var c int
 	var res []int
-	l := len(list)
-	if i <= l {
-		return list[i]
+	l := len(types.List)
+	if i < l {
+		return types.List[i]
 	}
 	for {
 		c = i % l
@@ -18,7 +20,7 @@ func NewID(i int) (id string) {
 	}
 
 	for j := len(res) - 1; j >= 0; j-- {
-		id += list[res[j]]
+		id += types.List[res[j]]
 	}
 
 	return

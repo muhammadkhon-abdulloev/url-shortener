@@ -38,13 +38,16 @@ func (h *serviceHandles) GetLongURL(w http.ResponseWriter, r *http.Request) {
 		h.writeError(w, err, http.StatusInternalServerError)
 	}
 
+	if response.Redirect {
+		http.Redirect(w, r, response.RedirectURI, http.StatusSeeOther)
+	}
+
 	respBody, err := json.Marshal(response)
 	if err != nil {
 		h.writeError(w, err, http.StatusInternalServerError)
 	}
 
 	h.writeResponse(w, respBody)
-
 }
 
 func (h *serviceHandles) ShortURL(w http.ResponseWriter, r *http.Request) {
